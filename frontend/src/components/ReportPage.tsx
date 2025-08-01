@@ -7,6 +7,8 @@ const ReportPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  keycloak.init({pkceMethod: 'S256'})
+
   // Проверка аутентификации при инициализации
   useEffect(() => {
     if (initialized && !keycloak.authenticated) {
