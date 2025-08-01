@@ -11,9 +11,7 @@ const ReportPage: React.FC = () => {
   useEffect(() => {
     if (initialized && !keycloak.authenticated) {
       // Автоматический редирект на логин с PKCE
-      keycloak.login({
-        pkceMethod: 'S256' // Используем PKCE с SHA-256
-      });
+      keycloak.login();
     }
   }, [initialized, keycloak]);
 
@@ -37,7 +35,7 @@ const ReportPage: React.FC = () => {
         }
       } catch (refreshError) {
         console.error('Failed to refresh token:', refreshError);
-        keycloak.login({ pkceMethod: 'S256' });
+        keycloak.login();
         return;
       }
 
@@ -67,7 +65,7 @@ const ReportPage: React.FC = () => {
       setError(err instanceof Error ? err.message : 'An error occurred');
       // Если ошибка связана с аутентификацией, предлагаем перелогиниться
       if (err instanceof Error && err.message.includes('401')) {
-        keycloak.login({ pkceMethod: 'S256' });
+        keycloak.login();
       }
     } finally {
       setLoading(false);
@@ -116,7 +114,7 @@ const ReportPage: React.FC = () => {
                 <p className="font-medium">Error:</p>
                 <p>{error}</p>
                 <button
-                    onClick={() => keycloak.login({ pkceMethod: 'S256' })}
+                    onClick={() => keycloak.login()}
                     className="mt-2 text-sm text-red-700 underline hover:text-red-800"
                 >
                   Re-authenticate
